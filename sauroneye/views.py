@@ -26,11 +26,12 @@ class SauronEyeAPI(generics.GenericAPIView):
                 if form2.is_valid():
                     eventdata = form2.save(commit=False)
                     eventdata.session = event
-                    print('true4')
 
-                    event.save()
-                    eventdata.save()
-
+                    try:
+                        eventdata.save()
+                    except:
+                        event.delete()
+                        return response.Response('failed to add',status=500)
 
         return response.Response('success',status=200)
 
